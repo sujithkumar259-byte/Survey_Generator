@@ -1,0 +1,105 @@
+# =============================================================================
+# BEST PRACTICES - SEGMENTATION  (creation-time guidance)
+# -----------------------------------------------------------------------------
+# Injected into the survey-CREATION steps (Step 1 section suggester, Step 5
+# question drafter) whenever the study type is a Segmentation study. Comment
+# lines (#) are stripped before sending to the model, so this header costs no
+# tokens. Edit the body freely.
+# =============================================================================
+
+SEGMENTATION SURVEY STANDARDS — follow these when proposing sections and drafting questions.
+
+PURPOSE
+A good segmentation survey identifies meaningful groups of respondents who differ in
+mindset, behavior, needs, motivations, barriers, and future receptivity. It should answer:
+who the distinct segments are, what makes them different, why they behave differently,
+how large each segment is, and how each should be targeted/messaged/supported/prioritized.
+The resulting segments must be DISTINCT, EXPLAINABLE, MEASURABLE, REACHABLE (identifiable
+through profiling variables), and ACTIONABLE.
+
+CORE RULE — every question must serve at least one purpose; if it serves none, do not include it:
+- screen in the right respondents
+- create segmentation inputs
+- profile the segments
+- measure current behavior
+- identify drivers and barriers
+- measure future intent or receptivity
+- inform targeting / messaging / support / engagement strategy
+- answer another key hypothesis not covered above
+
+SECTION FLOW (broad → specific). Propose sections in this order where relevant:
+1. Consent & introduction
+2. Screener / eligibility (confirm respondent type, relevant experience, current involvement,
+   volume/frequency, awareness/usage if needed, audience mix, key exclusions)
+3. General mindset & psychographics
+4. Category-specific attitudes
+5. Current behavior
+6. Current approach / decision process
+7. Needs, drivers & barriers
+8. Reaction to TPP / profile / concept / message (if relevant)
+9. Future intent / receptivity
+10. Information sources & engagement preferences
+11. Demographics / profiling variables
+SEQUENCE RULES: current behavior BEFORE future intent; unaided awareness BEFORE aided;
+general attitudes BEFORE exposing any concept/profile; sensitive/demographic questions later
+unless needed to screen.
+
+STRONG SEGMENTATION VARIABLES — these are the engine of the analysis. Build a battery that
+discriminates respondents on: mindset, motivation, decision style, risk tolerance, confidence,
+urgency, need state, current behavior, change readiness, barriers, support needs, future
+receptivity, information-seeking, engagement preferences. Write items that EXPLAIN behavior,
+not items that merely describe.
+  Good: "I am willing to work through extra effort if I believe the option is best for me."
+  Bad:  "Effort is important."
+  Good: "I prefer to try new options early when they fit my needs."
+  Bad:  "I like new things."
+Attitudinal items must be single-idea statements (never double-barrelled) so they load cleanly
+onto one factor, and must discriminate (avoid consensus statements everyone agrees with).
+Mix positively- and negatively-worded statements.
+
+BALANCE ATTITUDES AND BEHAVIOR — do not rely only on agreement statements. Measure what
+respondents believe, what they currently do, why they do it, what prevents change, what would
+motivate change, and what they are likely to do next. (Behavior shows what they do; attitudes
+explain why.)
+
+DRIVERS & BARRIERS — explain WHY segments differ; keep categories separate (emotional,
+practical, financial, informational, system-level) rather than collapsing into one broad option.
+  Drivers e.g.: better outcomes, convenience, confidence, trust, evidence, peer influence,
+  relevance, ease of use, affordability, availability, support, reduced effort, reassurance.
+  Barriers e.g.: low awareness, low urgency, low confidence, cost, access, admin/time burden,
+  fear of risk, preference for familiar, lack of support, unclear value, complexity, past bad
+  experience.
+
+QUESTION WORDING — specific, neutral, easy to answer; never leading, emotional, promotional,
+vague, or judgmental.
+  Good: "In the past 12 months, how often have you used or considered this option?"
+  Bad:  "Do you use this often?"
+  Good: "How likely would you be to use this option based on the information shown?"
+  Bad:  "How likely would you be to use this innovative and effective option?"
+  Good: "What are the biggest barriers to using this option?"
+  Bad:  "Why are you hesitant to use this option?"
+
+QUESTION TYPES — match type to purpose: single-select (one answer), multi-select (several),
+numeric (counts/%/allocation), rating scales (attitudes/satisfaction/confidence/importance/
+likelihood/agreement), bipolar scales (trade-offs between two opposing mindsets), ranking (only
+when true prioritization is needed), open-end (sparingly: unaided awareness, explanation, "other
+specify"). Avoid too many rankings, too many open-ends, and long repetitive grids. Keep rating
+scales consistent across a battery (same points, same anchors) so items are comparable.
+
+BIAS CONTROL — neutral wording; balanced answer options; randomize where appropriate; anchor
+"Other", "None", "Don't know"; mutually exclusive logic; current behavior before future intent;
+never show a product/profile/concept too early.
+
+DATA-QUALITY — build in: forced responses where appropriate, range checks, autosums / 100%
+total validation, mutually exclusive options, attention/speeding/straight-lining/consistency
+checks, and skip-logic checks. (e.g. a primary reason chosen later should also appear in the
+earlier "select all that apply" list.)
+
+RESPONDENT EXPERIENCE — simple language; define technical terms (hover/definitions); consistent
+scales; avoid repetition; use page breaks; limit long grids; keep open-ends minimal; realistic
+length; never ask respondents to estimate things they cannot know.
+
+MISTAKES TO AVOID — questions that won't be used; over-screening; relying only on attitudes;
+ignoring current behavior; future intent asked too early; promotional wording; double-barrelled
+questions; overlapping options; overusing rankings; very long grids; missing data-quality checks;
+segments that cannot be profiled or targeted.

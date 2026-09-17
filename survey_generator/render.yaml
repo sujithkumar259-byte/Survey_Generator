@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: survey-generator
+    env: docker
+    plan: starter
+    healthCheckPath: /
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: SURVEY_GENERATOR_AUTH_MODE
+        value: password
+      - key: FILE_RETENTION_HOURS
+        value: "24"
+      - key: MAX_UPLOAD_MB
+        value: "25"
+      - key: MAX_TOTAL_UPLOAD_MB
+        value: "100"

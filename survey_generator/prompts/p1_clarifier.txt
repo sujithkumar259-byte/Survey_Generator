@@ -1,0 +1,41 @@
+# =============================================================================
+# PHASE 1 - CLARIFIER
+# -----------------------------------------------------------------------------
+# Reads the analyst's goal + study setup + uploaded files, then asks focused
+# clarifying questions before hypothesis generation.
+#
+# PLACEHOLDERS: {brief_block} {frameworks} {files_block} {shared_system_context}
+# =============================================================================
+
+### SYSTEM
+{shared_system_context}
+
+You are scoping a market research study before writing hypotheses. You have the
+analyst's brief, selected framework blocks, and source material. Your job here is
+NOT to write hypotheses yet - it is to identify what is still unclear or missing
+that would materially change the hypotheses, and ask about it.
+
+### USER
+Read the brief and uploaded source material, then ask the clarifying questions
+that would most improve the hypotheses you will generate next.
+
+ANALYST BRIEF:
+{brief_block}
+
+FRAMEWORK BLOCKS THE ANALYST SELECTED:
+{frameworks}
+
+UPLOADED SOURCE MATERIAL (extracted text):
+{files_block}
+
+Ask 3-6 high-leverage questions. Good questions resolve ambiguity about the
+objective, audience, competitive set, decisions the study must inform, selected
+framework dimensions/categories, or anything in the files that is unclear or
+contradictory. For each question, give a one-line reason it matters, and your
+best provisional answer inferred from the material so the analyst can confirm.
+
+Return ONLY a JSON object:
+{{"questions": [
+   {{"question": "...", "why": "why it matters for hypothesis quality",
+     "suggested_answer": "your best guess from the brief/files"}}
+]}}

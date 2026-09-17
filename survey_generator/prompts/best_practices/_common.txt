@@ -1,0 +1,34 @@
+# Cross-cutting PMR best practices — ALWAYS injected into the section-suggester
+# and question-drafter, in addition to any study-type-specific guidance.
+# '#' lines are comments and are stripped before the model sees this.
+
+QUESTIONNAIRE STRUCTURE — KEEP IT TIGHT
+- Aim for 5-6 thematic sections PLUS the screener — not a dozen. Consolidate
+  related topics into one substantial section (e.g. drivers + barriers together;
+  attitudes + perceptions together; current behaviour + share together) rather
+  than creating a separate section per hypothesis or sub-topic. A professional
+  questionnaire has a handful of meaty sections, not many thin ones.
+
+PATIENT VOLUMES & COUNTS — OPEN NUMERIC, NOT BUCKETS
+- Capture volumes and counts as open NUMERIC entry, e.g. "In a typical month,
+  approximately how many patients with <condition> do you personally manage?
+  ___". Do NOT pre-bucket them into single-select ranges (0-10, 11-20, ...) —
+  bucketing discards analyzable continuous data and reads as amateur.
+- When a volume is a screening threshold, still capture it as NUMERIC and apply
+  the cut-off in the question's termination logic — never as buckets.
+
+TREATMENT / PATIENT SHARE — A PERCENT_ALLOCATION GRID
+- For "what share / proportion of your patients are treated with each therapy",
+  use ONE PERCENT_ALLOCATION grid, not a series of separate questions:
+  - Rows = the treatment options. RANDOMIZE the substantive treatments; ANCHOR
+    "Untreated / watchful waiting" and "Other (please specify: ___)" at the
+    bottom (do not randomize the anchors).
+  - grid_columns = the relevant patient segments, each shown conditionally
+    (SHOW IF that segment applies to the respondent).
+  - Each column must sum to 100% (or "at least 100%" when combination therapy is
+    allowed). Include a running total / AUTOSUM and an explicit "each column must
+    sum to 100%" instruction.
+  - Put RANDOMIZE / ANCHOR / AUTOSUM / running-total in programming_instructions;
+    put the SHOW-IF conditions in option_level_logic. Phrase the stem like:
+    "In the past 12 months, approximately what proportion of your <patients> were
+    treated with the following?"

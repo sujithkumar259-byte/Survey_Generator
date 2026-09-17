@@ -1,0 +1,15 @@
+services:
+  survey-generator:
+    build: .
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    volumes:
+      - survey_generator_tmp:/tmp/survey_generator
+      - survey_generator_store:/tmp/survey_generator_project_store
+    restart: unless-stopped
+
+volumes:
+  survey_generator_tmp:
+  survey_generator_store:

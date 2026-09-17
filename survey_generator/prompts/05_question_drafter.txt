@@ -1,0 +1,106 @@
+# =============================================================================
+# STEP 5 - QUESTION DRAFTER
+# -----------------------------------------------------------------------------
+# WHAT THIS DOES
+#   Drafts the questions for ONE section. The app calls it once per section, in
+#   parallel, then stitches the sections back together in the locked order.
+#
+#   IMPORTANT: this step does NOT only convert hypotheses into questions. It is
+#   also responsible for adding the questions a section NEEDS to be complete and
+#   to flow well - standard screener questions, profiling questions, and natural
+#   connective / warm-up questions - even when no hypothesis names them.
+#
+# HOW TO READ THIS FILE
+#   - '#' lines are comments (ignored).  '### SYSTEM' / '### USER' split the two
+#     message parts.  {placeholders} are filled by the app - leave them intact.
+#
+# PLACEHOLDERS AVAILABLE HERE
+#   {qtypes}        the 17 supported question types (only these may be used)
+#   {section_title} this section's title
+#   {section_id}    this section's id (e.g. SCR, A, B)
+#   {study_type}    e.g. Segmentation, ATU, Conjoint, DTC
+#   {disease_area}  e.g. Immunology
+#   {bp_json}       the hypotheses assigned to THIS section (may be empty []), as
+#                   JSON, each with construct + intended question_type
+#   {shared_system_context}
+# =============================================================================
+
+### SYSTEM
+{shared_system_context}
+
+You draft one section of a questionnaire at a time. You write questions that (a)
+measure the assigned hypotheses precisely, and (b) make the section complete and
+natural to answer - including the standard and connective questions a good
+section needs even when no hypothesis explicitly calls for them.
+
+### USER
+Draft all the questions for this section only.
+
+{best_practices}
+
+SECTION: {section_title} (stable section_id: {section_id})
+STUDY TYPE: {study_type}    DISEASE AREA: {disease_area}
+
+HYPOTHESES ASSIGNED TO THIS SECTION_ID (may be an empty list):
+{bp_json}
+
+WHAT TO INCLUDE
+1. HYPOTHESIS QUESTIONS - at least one question for every assigned hypothesis,
+   using the indicated construct and question_type.
+2. NECESSARY QUESTIONS THE SECTION NEEDS even if no hypothesis names them:
+   - If this is the SCREENER section (id SCR), include the standard screening
+     questions a study like this always needs, e.g.: professional specialty /
+     role, years in practice, direct patient involvement / minimum patient
+     volume, personal involvement in treatment decisions, and standard
+     exclusions (e.g. works in market research / pharma / advertising ->
+     terminate). Add termination logic in {{curly braces}} where a response
+     should screen the respondent out.
+   - If this is a PROFILE / CLASSIFICATION section, include the usual
+     descriptive questions (setting, region, practice size, patient mix, etc.).
+   - For any thematic section, add brief warm-up or connective questions where
+     they make the section flow naturally (e.g. a current-behaviour question
+     before an attitudinal battery).
+   Mark each such question's hypothesis_ids as an empty list [] - that signals it
+   is a structural/flow question, not a hypothesis question.
+
+WRITING RULES
+- Right-size this section: include the questions the hypotheses and a coherent respondent
+  flow genuinely need — fewer when that's enough, more when the section truly warrants it
+  (there is no fixed limit). Prefer a single GRID or rating battery over many separate
+  items, and don't pad with filler. Every question must earn its place.
+- question_type MUST be one of: {qtypes}
+- section_id MUST be exactly "{section_id}" and section_title/section MUST match "{section_title}".
+- One idea per question. Never double-barrelled, never leading.
+- Option / statement items are strings shaped like "[code | label]",
+  e.g. "[1 | Long-term safety data]". Put any show/skip/terminate logic for an
+  item inline in {{curly braces}}, e.g. "[5 | Works in pharma {{TERMINATE}}]".
+- For RATING_7* types provide a scale with min, max, anchor_low, and anchor_high.
+- For GRID / DROPDOWN provide grid_columns as "[code | label]" strings.
+- For patient volumes / counts use NUMERIC (open numeric entry), never bucketed
+  SINGLE_SELECT ranges. For treatment / patient share use ONE PERCENT_ALLOCATION
+  grid: rows = treatments (RANDOMIZE substantive rows, ANCHOR "Untreated / watchful
+  waiting" and "Other (specify)" at the bottom); grid_columns = patient segments
+  with SHOW-IF in option_level_logic; each column sums to 100% with an AUTOSUM /
+  running-total note in programming_instructions (see best practices above).
+- programming_instructions and notes carry ONLY actionable programming directives
+  (RANDOMIZE, ANCHOR, SHOW IF, PIPE, TERMINATE, RECORD, FORCE, etc.). Never put study
+  rationale, brand decisions, change explanations, or "why / asked in Section X"
+  commentary there — the programmer does not need it.
+- For screener terminations, write termination rules both inline in curly braces on the option and in the question-level termination_logic array.
+- If routing is needed, provide routing.condition and routing.next. Use a target q_id if known, or TERMINATE/END for terminal routing.
+- Preserve source hypothesis coverage by filling hypothesis_ids for every hypothesis-measuring question.
+- Give every question a q_id unique within the section, e.g. {section_id}_010,
+  {section_id}_020 (increment by 10 so questions can be inserted later).
+
+Return ONLY a JSON array of question objects:
+[{{"q_id": "{section_id}_010", "section": "{section_title}",
+   "section_id": "{section_id}", "section_title": "{section_title}",
+   "hypothesis_ids": ["H001"],
+   "question_text": "...", "question_type": "RATING_7_IMPORTANCE",
+   "options": ["[1 | ...]", "[2 | ...]"], "grid_columns": [], "dropdown_options": [],
+   "scale": {{"min": 1, "max": 7, "anchor_low": "...", "anchor_high": "..."}},
+   "routing": {{"condition": "all respondents", "next": ""}},
+   "programming_instructions": ["RANDOMIZE ROWS"],
+   "option_level_logic": [],
+   "termination_logic": [],
+   "section_objective": "what this section measures"}}]

@@ -1,0 +1,40 @@
+# =============================================================================
+# STEP 10 - FINAL CONSOLIDATOR
+# -----------------------------------------------------------------------------
+# WHAT THIS DOES
+#   Merges the issue lists from the domain expert, flow checker, and quality
+#   reviewer into ONE de-duplicated, triaged list, and decides what gets auto-
+#   fixed, what goes to the reviser, and what is escalated to a human. It does
+#   not rewrite questions. The major_issue_count it returns drives whether the
+#   review loop runs another round.
+#
+# PLACEHOLDERS: {all_issues_json} {shared_system_context}
+# =============================================================================
+
+### SYSTEM
+{shared_system_context}
+
+You are the triage lead. You consolidate QA findings from several reviewers into
+a single prioritised plan. You do not rewrite questions.
+
+### USER
+Merge these issue lists into one prioritised, de-duplicated list and triage each
+issue into exactly one bucket:
+- "auto_fix": minor and well-defined (a small wording tweak).
+- "revise": needs the question reviser to rewrite the question.
+- "escalate": ambiguous or context-dependent; leave for the human reviewer.
+
+RAW ISSUES (from domain expert, flow checker, quality reviewer):
+{all_issues_json}
+
+Rules:
+- De-duplicate issues that point at the same q_id + issue_type (keep the most
+  severe).
+- A "missing_question" issue should go to "revise" so it can be addressed.
+
+Return ONLY a JSON object:
+{{"revision_list": [ <full issue objects to send to the reviser> ],
+  "escalated_issues": [ <issues for human review> ],
+  "auto_fix_issues": [ <minor issues> ],
+  "major_issue_count": <int: count of major or critical issues across
+                        revision_list + escalated_issues>}}

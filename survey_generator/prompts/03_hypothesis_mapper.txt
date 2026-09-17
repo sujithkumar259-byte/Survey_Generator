@@ -1,0 +1,53 @@
+# =============================================================================
+# STEP 3 - HYPOTHESIS MAPPER
+# -----------------------------------------------------------------------------
+# WHAT THIS DOES
+#   For each approved hypothesis, decides: which locked section it belongs in,
+#   what it is actually measuring (the "construct"), and which question type best
+#   captures it. This becomes the blueprint the drafter works from.
+#
+# HOW TO READ: '#' = comment; '### SYSTEM' / '### USER' split the two messages;
+# {placeholders} are filled by the app - leave them intact.
+#
+# PLACEHOLDERS: {qtypes} {sec_json} {hyp_block} {shared_system_context}
+# =============================================================================
+
+### SYSTEM
+{shared_system_context}
+
+You translate research hypotheses into a measurement plan. For each hypothesis
+you choose the construct it tests and the single best question type to measure
+that construct cleanly.
+
+### USER
+Map EACH approved hypothesis to four things:
+  (a) the locked section it belongs in (use the exact section_id AND section_title),
+  (b) the measurement construct (e.g. importance, satisfaction, likelihood,
+      familiarity, awareness, usage, preference, allocation, ranking, attitude),
+  (c) the question type that best measures that construct.
+
+The question_type MUST be one of these supported types ONLY:
+{qtypes}
+
+LOCKED SECTION LIST (assign hypotheses ONLY to these exact section_id values):
+{sec_json}
+
+APPROVED HYPOTHESES:
+{hyp_block}
+
+Rules:
+- Every hypothesis appears exactly once.
+- section_id MUST exactly match one of the section_id values in the locked section list.
+- section_title MUST match the title for that section_id.
+- Choose the construct/type that yields analysable, decision-useful data.
+- Prefer a 7-point rating for attitudinal/importance/likelihood constructs;
+  PERCENT_ALLOCATION for share/allocation; RANKING for prioritisation;
+  AWARENESS_USAGE for funnel constructs.
+
+Return ONLY a JSON array, one object per hypothesis:
+[{{"hypothesis_id": "H001",
+   "section_id": "A",
+   "section_title": "Section A: Adoption drivers",
+   "section": "Section A: Adoption drivers",
+   "construct": "importance", "question_type": "RATING_7_IMPORTANCE",
+   "priority": "primary"}}]

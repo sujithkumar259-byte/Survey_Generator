@@ -1,0 +1,91 @@
+# =============================================================================
+# PHASE 1 - HYPOTHESIS GENERATOR
+# -----------------------------------------------------------------------------
+# Generates research hypotheses from the analyst brief, clarifying answers,
+# uploaded source material, and selected framework BLOCKS. Output is plain CSV.
+#
+# PLACEHOLDERS:
+#   {brief_block}     analyst brief as JSON
+#   {study_type}      the study type
+#   {frameworks}      selected framework definitions / custom prompt
+#   {clarifications}  Q&A the analyst confirmed
+#   {files_block}     extracted text of uploaded files
+#   {shared_system_context}
+# =============================================================================
+
+### SYSTEM
+{shared_system_context}
+
+You generate research HYPOTHESES - testable statements a survey can confirm or
+refute - not survey questions. Each hypothesis must be specific, falsifiable,
+grounded in the supplied material, and clearly useful for the stated study type.
+
+You must return plain CSV text only. Do not return JSON. Do not use markdown
+fences. Do not add commentary before or after the CSV.
+
+### USER
+Generate the research hypotheses for this study.
+
+ANALYST BRIEF:
+{brief_block}
+
+STUDY TYPE: {study_type}
+
+SELECTED FRAMEWORK BLOCKS:
+{frameworks}
+
+ANALYST ANSWERS TO CLARIFYING QUESTIONS (treat as authoritative; may be empty):
+{clarifications}
+
+UPLOADED SOURCE MATERIAL (extracted text - ground hypotheses in this where
+possible):
+{files_block}
+
+Output contract:
+- Return ONLY CSV text.
+- The first row must be exactly:
+hypotheses number,category,Hypotheses,rationale
+- Use IDs H001, H002, H003, ... in the first column.
+- category must be a specific construct, driver, barrier, journey stage, mindset,
+  behavior, or dimension from the selected framework blocks. Do NOT put the
+  framework name itself in category.
+- Hypotheses must be one testable claim, specific to this market, disease area,
+  and target audience.
+- rationale must be one concise sentence explaining why the hypothesis matters
+  for a {study_type} study.
+- Quote every CSV field that contains a comma, quote mark, or line break.
+- Do not include source files, status, priority, notes, JSON keys, bullets, or
+  markdown tables.
+
+Required hypothesis wording style:
+- Most hypotheses should follow this structure:
+  [audience] who [specific attribute / belief / barrier / behavior / situation]
+  are more likely to [specific measurable outcome / action / receptivity].
+- Also valid:
+  [audience] who [specific attribute / belief / barrier / behavior / situation]
+  are less likely to [specific measurable outcome / action].
+- Also valid:
+  [audience] who [specific attribute / belief / barrier / behavior / situation]
+  are more/less likely to be receptive to [specific message, product, support,
+  or intervention].
+- Replace the brackets with actual data. Do not literally include brackets.
+- Use the analyst's target audience wording where possible, e.g. HCPs, patients,
+  accounts, consumers, caregivers, payers, specialists, or another respondent group.
+
+Quality rules:
+- Produce a balanced set across the selected framework blocks: a few strong,
+  distinct hypotheses per selected block rather than many overlapping ones.
+- Make the category column granular: examples include Potential, Attitudes,
+  Capabilities, Environment, Behavior, Diagnostic threshold, Treatment trigger,
+  Peer validation, Symptom burden, Affordability, Workflow maturity, Decision
+  centralization, Trust barrier, Price sensitivity, Channel preference.
+- Do not phrase hypotheses as questions.
+- Do not create duplicate or near-duplicate hypotheses.
+- Avoid generic claims like "awareness differs by segment" unless tied to a
+  specific condition and outcome.
+
+Example format only:
+hypotheses number,category,Hypotheses,rationale
+H001,"Potential","HCPs who treat a larger eligible patient pool are more likely to consider the target product for appropriate patients.","Tests whether prescribing opportunity separates high-potential HCP segments."
+H002,"Access barriers","HCPs who expect payer or formulary barriers are less likely to prescribe the target product routinely.","Tests whether environmental barriers suppress adoption even when clinical interest exists."
+H003,"Peer validation","HCPs who rely on local peer experience are more likely to be receptive to colleague-led evidence and case examples.","Tests whether social proof should shape engagement strategy."

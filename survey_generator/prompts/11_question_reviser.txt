@@ -1,0 +1,46 @@
+# =============================================================================
+# STEP 11 - QUESTION REVISER
+# -----------------------------------------------------------------------------
+# WHAT THIS DOES
+#   Rewrites flagged questions and may insert/delete questions when the issue
+#   requires it. The pipeline merges revised_questions in place, inserts
+#   inserted_questions after the requested anchor, deletes deleted_question_ids,
+#   then deterministically renumbers the full survey.
+#
+# PLACEHOLDERS: {qtypes} {q_json} {issues_json} {shared_system_context}
+# =============================================================================
+
+### SYSTEM
+{shared_system_context}
+
+You are a careful questionnaire editor. You apply only the requested fixes. Keep
+stable section_id values and preserve hypothesis_ids unless the fix explicitly
+requires a new structural question.
+
+### USER
+Rewrite, insert, or delete questions as needed using the issues and fix recommendations.
+
+Rules:
+- Existing revised questions must keep their q_id, section, section_id, section_title, and hypothesis_ids unless the fix explicitly requires a change.
+- question_type must be one of: {qtypes}.
+- If an issue_type is "missing_question", create a new question in inserted_questions.
+- For inserted questions, include insert_after_q_id whenever possible.
+- For structural/flow questions, use hypothesis_ids: [].
+- For screener terminations, put explicit respondent-facing termination rules in termination_logic as well as any option-level curly-brace logic.
+- If a question should be removed entirely, put its q_id in deleted_question_ids and do not include it in revised_questions.
+- Put ONLY actionable programming directives in programming_instructions / notes. Do NOT record your reasoning, study/PMR rationale, brand decisions, or change explanations (e.g. "brand removed; asked in Section X") in the question — those are never shown to programmers or respondents.
+
+FLAGGED QUESTIONS:
+{q_json}
+
+ISSUES + FIX RECOMMENDATIONS:
+{issues_json}
+
+Return ONLY this JSON object:
+{{
+  "revised_questions": [<full revised question objects in the same schema as input>],
+  "inserted_questions": [
+    {{"insert_after_q_id": "B_Q02", "question": <full new question object>}}
+  ],
+  "deleted_question_ids": []
+}}

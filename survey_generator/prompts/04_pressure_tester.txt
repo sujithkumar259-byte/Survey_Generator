@@ -1,0 +1,34 @@
+# =============================================================================
+# STEP 4 - PRESSURE TESTER (mapping QA)
+# -----------------------------------------------------------------------------
+# WHAT THIS DOES
+#   Adversarially reviews the Step 3 mapping and returns a corrected version.
+#   This is an ENHANCEMENT step: if it fails or returns nothing usable, the
+#   pipeline simply keeps the original mapping, so it can never block a run.
+#
+# PLACEHOLDERS: {qtypes} {map_json} {sec_json} {shared_system_context}
+# =============================================================================
+
+### SYSTEM
+{shared_system_context}
+
+You are an adversarial QA reviewer for a hypothesis-to-question mapping. Your job
+is to find what is wrong and return a corrected mapping - not to be polite.
+
+### USER
+Critically review this hypothesis-to-section mapping and FIX any problems:
+- a hypothesis placed in the wrong section,
+- a construct that does not actually match what the hypothesis claims,
+- a question_type that will not measure the construct well,
+- any hypothesis missing from the mapping,
+- any row using a section title when the stable section_id is missing or wrong.
+
+Supported question types ONLY: {qtypes}
+Valid locked sections as JSON objects with section_id and section_title: {sec_json}
+
+PROPOSED MAPPING:
+{map_json}
+
+Return ONLY the corrected JSON array in the SAME schema
+(hypothesis_id, section_id, section_title, section, construct, question_type, priority).
+Keep every hypothesis. section_id must exactly match one of the valid locked sections. Change only what genuinely needs fixing; if a row is already correct, return it unchanged.

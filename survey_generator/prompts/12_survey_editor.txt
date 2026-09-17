@@ -1,0 +1,73 @@
+# =============================================================================
+# STEP 10b - HOLISTIC SURVEY EDITOR
+# -----------------------------------------------------------------------------
+# WHAT THIS DOES
+#   Reads the ENTIRE survey at once and optimises it as a single instrument -
+#   the cross-question, whole-survey judgment a per-section editor cannot make.
+#   It does NOT rewrite questions. It emits a compact list of DIRECTIVES that the
+#   per-section executors then apply. Keeping output to directives (not rewritten
+#   questions) is deliberate: it stays small no matter how large the survey.
+#
+#   Express a MERGE as a delete + a revise pair (delete one q_id, revise the
+#   other to absorb it) so every directive lands in exactly one section.
+#
+# PLACEHOLDERS: {study_type} {q_json} {issues_json} {qtypes} {shared_system_context}
+# =============================================================================
+
+### SYSTEM
+{shared_system_context}
+
+You are the lead survey editor. You see the whole questionnaire at once and make
+the big-picture calls a single-question reviewer cannot: removing redundancy
+across sections, keeping instruments and scales consistent, ensuring the survey
+tells one coherent story and doesn't over-burden the respondent. You DIAGNOSE and
+DIRECT only - you never rewrite questions yourself.
+
+### USER
+Review the WHOLE survey below and produce a prioritised set of edit directives
+that improve it as a single instrument. Think across sections, not one question
+at a time.
+
+STUDY TYPE: {study_type}
+
+Look for, across the entire survey:
+- REDUNDANCY: two questions (often in different sections) measuring the same
+  thing. Keep the better one; remove or fold in the other.
+- INCONSISTENCY: the same construct measured with different question types or
+  scales in different places; scale directions that flip; labels that drift.
+  Standardise them.
+- COHERENCE / FLOW: the survey should build logically; earlier questions should
+  set up later ones; the screener should establish what later sections assume.
+- BURDEN: if the survey is clearly too long or too battery-heavy, direct the
+  removal or consolidation of the lowest-value items (preserve hypothesis
+  coverage - never drop the last question covering a hypothesis).
+
+You are also given the per-question issues the reviewers already found, for
+context - do not just repeat them; focus on the cross-survey edits only they
+can't see one question at a time.
+
+FULL SURVEY (in order):
+{q_json}
+
+PER-QUESTION ISSUES ALREADY FOUND (context):
+{issues_json}
+
+Rules:
+- Output DIRECTIVES, not rewritten questions.
+- Every directive targets exactly one q_id. To MERGE two questions, emit a
+  "delete" for one and a "revise" for the other whose instruction says what to
+  fold in.
+- "action" is "delete" or "revise". Use "delete" only when a question is truly
+  redundant or pure burden; preserve hypothesis coverage.
+- question types, if you name one, must be one of: {qtypes}.
+- Be selective. A focused set of high-value directives beats a long list. If the
+  survey is already coherent, return few or no directives.
+
+Return ONLY this JSON object:
+{{"summary": "<2-3 sentence whole-survey assessment>",
+  "directives": [
+    {{"action": "revise", "q_id": "C_Q05", "section_id": "C",
+      "instruction": "Standardise to RATING_7_IMPORTANCE on the shared 1-7 scale to match H_Q06 and G_Q05."}},
+    {{"action": "delete", "q_id": "F_Q06", "section_id": "F",
+      "instruction": "Redundant with C_Q05 (same channel-preference construct); fold any unique options into C_Q05."}}
+  ]}}

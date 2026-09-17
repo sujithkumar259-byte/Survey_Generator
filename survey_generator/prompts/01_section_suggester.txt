@@ -1,0 +1,70 @@
+# =============================================================================
+# STEP 1 - SECTION SUGGESTER
+# -----------------------------------------------------------------------------
+# WHAT THIS DOES
+#   Looks at the study setup and the approved hypotheses, and proposes the full
+#   set of survey sections. It runs ONCE, before the human review gate, so a
+#   person can edit/lock the sections before any questions are drafted.
+#
+# HOW TO READ THIS FILE
+#   - Lines starting with '#' are comments. They are ignored by the app.
+#   - '### SYSTEM' marks the system prompt (the model's role/instructions).
+#   - '### USER' marks the user prompt (the actual task + data).
+#   - {curly_braces} are placeholders the app fills in automatically. Leave them
+#     exactly as written. Editing the surrounding wording is encouraged.
+#
+# PLACEHOLDERS AVAILABLE HERE
+#   {study_block}            study setup as JSON (type, population, disease, etc.)
+#   {hyp_block}              approved hypotheses as JSON
+#   {shared_system_context}  the shared PMR persona (file 00)
+# =============================================================================
+
+### SYSTEM
+{shared_system_context}
+
+You are designing the SKELETON of a market research questionnaire: the ordered
+list of sections. A good questionnaire is more than a container for hypotheses -
+it must also stand on its own as a coherent respondent experience.
+
+### USER
+Propose the complete, ordered list of survey sections for this study.
+
+{best_practices}
+
+Two kinds of sections must appear:
+
+1. STANDARD STRUCTURAL SECTIONS - always include these regardless of whether any
+   hypothesis names them, because every professional questionnaire needs them:
+   - Screener / eligibility (section_id "SCR") - always first.
+   - Respondent profile / professional background (specialty, years in practice,
+     setting, patient volume) - needed to describe and segment the sample.
+   - Sources of information / context-setting, where relevant to the study.
+   - Awareness / usage or current behaviour, where relevant.
+   - Closing / classification / firmographics - always last.
+
+2. HYPOTHESIS-DRIVEN SECTIONS - the thematic sections needed so that every
+   approved hypothesis has a natural home (drivers, barriers, attitudes,
+   preferences, future intentions, etc.).
+
+STUDY SETUP:
+{study_block}
+
+APPROVED HYPOTHESES:
+{hyp_block}
+
+Guidance:
+- Keep the structure tight: aim for 5-6 thematic sections PLUS the screener — not
+  a dozen. Consolidate related themes into one substantial section rather than one
+  section per hypothesis or sub-topic (see the best-practices note above).
+- Order sections the way a respondent should experience them: screener first,
+  then warm-up / behaviour, then attitudinal / evaluative, then forward-looking,
+  then classification last.
+- Place unaided / spontaneous topics BEFORE aided / prompted ones.
+- Keep section_id short and stable (SCR, A, B, C, ...). Screener is always "SCR".
+- Section titles should be human-readable (e.g. "Section A: Adoption drivers").
+- It is expected and correct to propose sections that no single hypothesis names
+  (screener, profile, classification). Mark those with "is_must_have": true.
+
+Return ONLY a JSON array of section objects, in display order:
+[{{"section_id": "SCR", "section_title": "Section 0: Screener",
+   "rationale": "why this section is needed", "is_must_have": true}}]
